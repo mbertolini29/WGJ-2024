@@ -68,4 +68,9 @@ public class CharacterMovement : MonoBehaviour
             }
         }
     }
+
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        targetPosition = transform.position;
+    }
 }
