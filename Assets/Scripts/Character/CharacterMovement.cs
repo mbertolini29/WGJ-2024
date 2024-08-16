@@ -7,7 +7,7 @@ public class CharacterMovement : MonoBehaviour
     [SerializeField] float moveSpeed = 2f;
     [SerializeField] float minDistance = 0.1f;
     [SerializeField] LayerMask layerMask;
-    
+
     private Rigidbody2D rb;
     private Animator animator;
     private Camera cam;
@@ -15,16 +15,49 @@ public class CharacterMovement : MonoBehaviour
     private Vector3 targetPosition;
     private bool isMoving = false;
 
+    public bool canMove = true;
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         cam = Camera.main;
+    } 
+
+    public void SetNPC(NPC npc)
+    {
+        npc.OnDialogueStart.AddListener(DisableMovement);
+        npc.OnDialogueEnd.AddListener(EnableMovement);
+    }
+
+    private void OnDisable()
+    {
+        NPC npc = FindObjectOfType<NPC>();
+        if (npc != null)
+        {
+            npc.OnDialogueStart.RemoveListener(DisableMovement);
+            npc.OnDialogueEnd.RemoveListener(EnableMovement);
+        }
+    }
+
+    private void DisableMovement()
+    {
+        canMove = false;
+    }
+
+    private void EnableMovement()
+    {
+        canMove = true;
     }
 
     void Update()
     {
-        HandleInput();
+        if (!canMove) return;
+        //if (canMove)
+        //{
+        //}
+
+        HandleInput();        
         MoveCharacter();
         UpdateAnimation();
     }

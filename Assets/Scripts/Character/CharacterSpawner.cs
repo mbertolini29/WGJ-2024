@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class CharacterSpawner : MonoBehaviour
 {
+    public UIManager uiManager;
     public GameObject wizardPrefab;
     public float delayTime = 3f;
     public float growDuration = 2f;
@@ -18,11 +19,10 @@ public class CharacterSpawner : MonoBehaviour
         yield return new WaitForSeconds(delayTime);
 
         GameObject NPC = Instantiate(wizardPrefab, wizardPrefab.transform.position, Quaternion.identity);
-
+        
         NPC.transform.localScale = Vector3.zero;
 
         float elapsedTime = 0f;
-
         while (elapsedTime < growDuration)
         {
             elapsedTime += Time.deltaTime;
@@ -32,5 +32,19 @@ public class CharacterSpawner : MonoBehaviour
         }
 
         NPC.transform.localScale = Vector3.one;
+
+        // Método para conectar el NPC con UIManager
+        NPC npcScript = NPC.GetComponent<NPC>();
+        if (npcScript != null && uiManager != null)
+        {
+            uiManager.SetNPC(npcScript); 
+        }
+
+        //metodo para conectar el NPC al charactermovement
+        CharacterMovement characterMovement = FindObjectOfType<CharacterMovement>();
+        if(characterMovement!=null)
+        {
+            characterMovement.SetNPC(npcScript);
+        }
     }
 }

@@ -7,45 +7,95 @@ using TMPro;
 
 public class UIManager : MonoBehaviour
 {
-    public static UIManager instance;
-    [Space]
-    public UnityEvent<int> OnUpdatePaddle1Score;
-    public UnityEvent<int> OnUpdatePaddle2Score;
-    [Space]
-    [SerializeField] GameObject gameOverScreen;
-    [Space]
-    [SerializeField] TMP_Text paddle1ScoreText;
-    [SerializeField] TMP_Text paddle2ScoreText;
+    public NPC npc;
+    public GameObject dialogueBox;
+    public GameObject talkUI;
 
-    void Awake()
+    [Header("Follow Canvas")]
+    public Transform npcTransform;
+    public RectTransform uiElement;
+    public Vector3 offset; //-0.5f, 1.75, 0
+    public Canvas canvas;
+
+    private void Start()
     {
-        if (instance == null)
+        if(talkUI != null)
         {
-            instance = this;
+            talkUI.SetActive(false);
+        }
+
+        //if (dialogueBox != null)
+        //{
+        //    dialogueBox.SetActive(false);
+        //}
+    }
+
+    private void OnDestroy()
+    {
+        if (npc != null)
+        {
+            npc.OnPlayerEnterRange.RemoveListener(ShowInteractText);
+            npc.OnPlayerExitRange.RemoveListener(HideInteractText);
+        }
+    }
+
+    // Método para conectar el NPC con este UIManager
+    public void SetNPC(NPC newNpc)
+    {
+        if (npc != null)
+        {
+            npc.OnPlayerEnterRange.RemoveListener(ShowInteractText);
+            npc.OnPlayerExitRange.RemoveListener(HideInteractText);
+        }
+
+        npc = newNpc;
+
+        if (npc != null)
+        {
+            npc.OnPlayerEnterRange.AddListener(ShowInteractText);
+            npc.OnPlayerExitRange.AddListener(HideInteractText);
+        }
+    }
+
+    public void ShowInteractText()
+    {
+        if (talkUI != null)
+        {
+            UpdatePosTalkUI();
+            talkUI.SetActive(true);
         }
         else
         {
-            Destroy(gameObject);
+            Debug.LogWarning("text no está asignado.");
         }
-
-        //
-        Time.timeScale = 1;
     }
 
-    public void UpdatePaddle1Score(int paddleScore)
+    void UpdatePosTalkUI() //actualiza la pos de la ui
     {
-        paddle1ScoreText.text = paddleScore.ToString();
+        if (npcTransform != null && uiElement != null && canvas != null)
+        {
+            Vector3 screenPos = Camera.main.WorldToScreenPoint(npcTransform.position + offset);
+
+            RectTransformUtility.ScreenPointToLocalPointInRectangle(
+                canvas.transform as RectTransform,
+                screenPos,
+                canvas.worldCamera,
+                out Vector2 canvasPosition
+            );
+
+            uiElement.anchoredPosition = canvasPosition;
+        }
     }
 
-    public void UpdatePaddle2Score(int paddleScore)
+    public void HideInteractText()
     {
-        paddle2ScoreText.text = paddleScore.ToString();
+        if (talkUI != null)
+        {
+            talkUI.SetActive(false);
+        }
+        else
+        {
+            Debug.LogWarning("text no está asignado.");
+        }
     }
-
-    public void ShowGameOverScreen()
-    {
-        gameOverScreen.SetActive(true);
-    }
-
-  
 }
