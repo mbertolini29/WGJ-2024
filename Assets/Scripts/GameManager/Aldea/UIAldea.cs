@@ -14,7 +14,6 @@ public class UIAldea : MonoBehaviour
 
     private void Update()
     {
-        UpdatePosButtonUI();
     }
 
     private void Start()
@@ -23,6 +22,8 @@ public class UIAldea : MonoBehaviour
         {
             dialogueBox.SetActive(false);
         }
+
+        UpdatePosButtonUI();
 
         StartCoroutine(ShowDialogueAfterDelay(1f));
     }

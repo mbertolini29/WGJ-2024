@@ -2,25 +2,29 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CursorManager : MonoBehaviour
+public class CursorManager : MonoBehaviour, ICursorChanger
 {
-    [SerializeField] Texture2D cursorSprite;
-    [SerializeField] Texture2D cursorOjo;
-    [SerializeField] Vector2 hotspot = Vector2.zero;
-    [SerializeField] float cursorScale = 0.75f; // 1f , es la original.
+    [SerializeField] Texture2D normalCursor;
+    [SerializeField] Vector2 hotspot = Vector2.zero; //hotspot = punto activo.
+    [SerializeField] CursorMode cursorMode = CursorMode.Auto;
+    //[Space]
+    //[SerializeField] float cursorScale = 0.75f; // 1f , es la original.
 
     void Start()
     {
         //Texture2D resizedCursor = ResizeTexture(cursorSprite, cursorScale);
-        SetCursor(cursorSprite);
+        Cursor.SetCursor(normalCursor, hotspot, cursorMode);
         Cursor.visible = true;
-
     }
 
-    public void SetCursor(Texture2D cursorSprite)
+    public void ChangeCursor(Texture2D cursorTexture, Vector2 hotspot)
     {
-        //hotspot = punto activo.
-        Cursor.SetCursor(cursorSprite, hotspot, CursorMode.Auto);
+        Cursor.SetCursor(cursorTexture, hotspot, cursorMode);
+    }
+
+    public void ResetCursor()
+    {
+        Cursor.SetCursor(normalCursor, hotspot, cursorMode);
     }
 
     private Texture2D ResizeTexture(Texture2D originalTexture, float scale)
@@ -47,4 +51,5 @@ public class CursorManager : MonoBehaviour
 
         return resizedTexture;
     }
+
 }
