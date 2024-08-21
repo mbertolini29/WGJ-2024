@@ -10,8 +10,17 @@ public class Book : Interactable
     public GameObject closedBook;
     public GameObject openBook;
 
+    private bool isOpen = false;
+    public bool IsOpen => isOpen;
+
+    [Header("Maps")]
+    public Map map;
+
     //public Texture2D cursorEyes;
     //private ICursorChanger cursorChanger;
+
+    [Space]
+    public UIBliblioteca biblioteca;
 
     protected override void Start()
     {
@@ -25,6 +34,7 @@ public class Book : Interactable
     public override void Interact()
     {
         OpenBook();
+        map.EnableMap();
     }
 
     private void OpenBook()
@@ -37,6 +47,13 @@ public class Book : Interactable
         if (openBook != null)
         {
             openBook.SetActive(true);
+        }
+
+        isOpen = true;
+
+        if (biblioteca != null)
+        {
+            biblioteca.StartDialogue();
         }
     }
 }
