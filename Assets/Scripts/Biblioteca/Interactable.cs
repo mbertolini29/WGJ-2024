@@ -10,6 +10,8 @@ public abstract class Interactable : MonoBehaviour
     public Texture2D cursorEyes;
     private ICursorChanger cursorChanger;
 
+    protected bool isOpenBook = false;
+
     protected virtual void Start()
     {
         cursorChanger = FindObjectOfType<CursorManager>();
@@ -22,7 +24,7 @@ public abstract class Interactable : MonoBehaviour
     private void OnMouseEnter()
     {
         cursorChanger = FindObjectOfType<CursorManager>();
-        if (cursorChanger != null && cursorEyes != null)
+        if (cursorChanger != null && cursorEyes != null && !isOpenBook)
         {
             cursorChanger.ChangeCursor(cursorEyes, Vector2.zero);
         }

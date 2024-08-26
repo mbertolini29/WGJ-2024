@@ -11,7 +11,7 @@ public class Book : Interactable
     public GameObject openBook;
 
     private bool isOpen = false;
-    public bool IsOpen => isOpen;
+    public bool IsOpen { get; set; } = false;
 
     [Header("Maps")]
     public Map map;
@@ -49,7 +49,7 @@ public class Book : Interactable
             openBook.SetActive(true);
         }
 
-        isOpen = true;
+        IsOpen = true;
 
         if (biblioteca != null)
         {
