@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using TMPro;
 
 public class PuzzleManager : MonoBehaviour
@@ -23,7 +24,11 @@ public class PuzzleManager : MonoBehaviour
     public GameObject openBook;
     public GameObject mapOpen;
     public GameObject feebBackCorrect;
-    public GameObject feebBackInCorrect;
+    public GameObject feebBackInCorrect; 
+    public GameObject panelDictionary;
+    public GameObject panelAreaCheck;
+    public GameObject enterButton;
+    public GameObject clearButton;
 
     private void Start()
     {
@@ -57,12 +62,23 @@ public class PuzzleManager : MonoBehaviour
     {
         if(formedWord == targetWord)
         {
+            //frena el tiempo.
+            GameManager.Instance.StopTimer();
+
             feebBackCorrect.SetActive(true);
             
             //cerrar el libro.
             closedBook.SetActive(true);
+
+            //activa el boton de bosque...
+
+            //
             mapOpen.SetActive(false);
             openBook.SetActive(false);
+            panelAreaCheck.SetActive(false);
+
+            //
+            Change("BosqueFinish");
         }
         else
         {
@@ -86,5 +102,20 @@ public class PuzzleManager : MonoBehaviour
             letterButtons[i].enabled = true;
         }
 
+    }
+
+    public void Change(string sceneName)
+    {
+        StartCoroutine(PlaySoundAndChangeScene(sceneName));
+    }
+
+    private IEnumerator PlaySoundAndChangeScene(string sceneName)
+    {
+        //audioSource.Play();
+
+        // Espera hasta que el sonido termine de reproducirse
+        yield return new WaitForSeconds(2f);
+
+        SceneManager.LoadScene(sceneName);
     }
 }

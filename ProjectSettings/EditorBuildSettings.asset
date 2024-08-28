@@ -17,4 +17,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Biblioteca.unity
     guid: 2ed1bc819b1c8ca45820a6b55f386394
+  - enabled: 1
+    path: Assets/Scenes/BosqueFinish.unity
+    guid: 41729bb33a1f96043b1d93dc17a1eb83
   m_configObjects: {}

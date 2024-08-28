@@ -14,14 +14,22 @@ public class CharacterMovement : MonoBehaviour
 
     private Vector3 targetPosition;
     private bool isMoving = false;
+    private Vector3 lastPosition;
+    private Vector3 movement;
 
     public bool canMove = true;
+
+    //
+    AudioSource audioSource;
+    public AudioClip walkingClip;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         cam = Camera.main;
+        audioSource = GetComponent<AudioSource>();
+        audioSource.clip = walkingClip;
     } 
 
     public void SetNPC(NPC npc)
@@ -53,13 +61,23 @@ public class CharacterMovement : MonoBehaviour
     void Update()
     {
         if (!canMove) return;
-        //if (canMove)
-        //{
-        //}
 
         HandleInput();        
         MoveCharacter();
         UpdateAnimation();
+
+        movement = transform.position - lastPosition;
+        lastPosition = transform.position;
+
+        // Controlar reproducción de sonido basado en movimiento
+        if (isMoving && movement.magnitude > 0 && !audioSource.isPlaying)
+        {
+            audioSource.Play();
+        }
+        else if ((!isMoving || movement.magnitude == 0) && audioSource.isPlaying)
+        {
+            audioSource.Stop();
+        }
     }
 
     void HandleInput()
@@ -84,7 +102,7 @@ public class CharacterMovement : MonoBehaviour
             transform.position = Vector3.MoveTowards(transform.position, 
                                                      targetPosition, 
                                                      moveSpeed * Time.deltaTime);
-            
+
             if (Vector3.Distance(transform.position, targetPosition) < minDistance)
             {
                 isMoving = false;

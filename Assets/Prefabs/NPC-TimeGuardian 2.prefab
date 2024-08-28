@@ -98,7 +98,7 @@ GameObject:
   - component: {fileID: 5154008577083799184}
   - component: {fileID: 2600386059519929216}
   m_Layer: 0
-  m_Name: NPC-TimeGuardian
+  m_Name: NPC-TimeGuardian 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -254,7 +254,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3084a87927302ce4aa26845088911949, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dialogue: {fileID: 11400000, guid: a3ebf3c362ba91f4493b2ee25f4e60ee, type: 2}
+  dialogue: {fileID: 11400000, guid: c24554bee21caef48ae51e0af5b1f947, type: 2}
   OnPlayerEnterRange:
     m_PersistentCalls:
       m_Calls:

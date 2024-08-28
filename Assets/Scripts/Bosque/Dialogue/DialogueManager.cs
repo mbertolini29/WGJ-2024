@@ -41,7 +41,6 @@ public class DialogueManager : MonoBehaviour
         characterNames.Clear();
         nameIndex = 0;
 
-
         foreach (string sentence in dialogue.sentences)
         {
             sentences.Enqueue(sentence);

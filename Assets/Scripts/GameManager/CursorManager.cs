@@ -9,6 +9,20 @@ public class CursorManager : MonoBehaviour, ICursorChanger
     [SerializeField] CursorMode cursorMode = CursorMode.Auto;
     //[Space]
     //[SerializeField] float cursorScale = 0.75f; // 1f , es la original.
+        
+    public static CursorManager Instance { get; private set; }
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
 
     void Start()
     {

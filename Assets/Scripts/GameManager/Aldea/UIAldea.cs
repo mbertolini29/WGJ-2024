@@ -7,14 +7,13 @@ public class UIAldea : MonoBehaviour
     public GameObject dialogueBox;    
 
     [Header("Follow Canvas")]
-    public Transform npcTransform;
+    public Transform bibliotecaTransform;
+    public Transform aldeaTransform;
+    public RectTransform uiBibliotecaElement;
     public RectTransform uiElement;
     public Vector3 offset; //-0.5f, 1.75, 0
+    public Vector3 offset2; //-0.5f, 1.75, 0
     public Canvas canvas;
-
-    private void Update()
-    {
-    }
 
     private void Start()
     {
@@ -23,7 +22,7 @@ public class UIAldea : MonoBehaviour
             dialogueBox.SetActive(false);
         }
 
-        UpdatePosButtonUI();
+        GameManager.Instance.StartTimer();
 
         StartCoroutine(ShowDialogueAfterDelay(1f));
     }
@@ -43,11 +42,34 @@ public class UIAldea : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        UpdatePosButtonUI();
+        UpdatePosButtonAldeaUI();
+    }
+
     void UpdatePosButtonUI() //actualiza la pos de la ui
     {
-        if (npcTransform != null && uiElement != null && canvas != null)
+        if (bibliotecaTransform != null && uiBibliotecaElement != null && canvas != null)
         {
-            Vector3 screenPos = Camera.main.WorldToScreenPoint(npcTransform.position + offset);
+            Vector3 screenPos = Camera.main.WorldToScreenPoint(bibliotecaTransform.position + offset);
+
+            RectTransformUtility.ScreenPointToLocalPointInRectangle(
+                canvas.transform as RectTransform,
+                screenPos,
+                canvas.worldCamera,
+                out Vector2 canvasPosition
+            );
+
+            uiBibliotecaElement.anchoredPosition = canvasPosition;
+        }
+    }
+
+    void UpdatePosButtonAldeaUI() //actualiza la pos de la ui
+    {
+        if (aldeaTransform != null && uiElement != null && canvas != null)
+        {
+            Vector3 screenPos = Camera.main.WorldToScreenPoint(aldeaTransform.position + offset2);
 
             RectTransformUtility.ScreenPointToLocalPointInRectangle(
                 canvas.transform as RectTransform,
